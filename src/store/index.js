@@ -33,6 +33,7 @@ const store = createStore({
       nom:'',
       prenom: '',
       email: '',
+      accountType: '',
       photo: '',
     },
   },
@@ -54,7 +55,7 @@ const store = createStore({
         token: '',
       }
       localStorage.removeItem('user');
-    }
+    } 
   },
   actions: {
     login: ({commit}, userInfos) => {

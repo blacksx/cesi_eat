@@ -1,18 +1,32 @@
 <template>
   <div class="card">
+    <div style="text-align: center">
+      <img src="/logo_cesi.png"/>
+    </div>
     <h1 class="card__title" v-if="mode == 'login'">Connexion</h1>
     <h1 class="card__title" v-else>Inscription</h1>
     <p class="card__subtitle" v-if="mode == 'login'">Tu n'as pas encore de compte ? <span class="card__action" @click="switchToCreateAccount()">Créer un compte</span></p>
     <p class="card__subtitle" v-else>Tu as déjà un compte ? <span class="card__action" @click="switchToLogin()">Se connecter</span></p>
     <div class="form-row">
-      <input v-model="email" class="form-row__input" type="text" placeholder="Adresse mail"/>
+      <input v-model="email" class="form-row__input" login="text" placeholder="Adresse mail"/>
+    </div>
+    <div class="form-row__input" v-if="mode == 'create'">
+    <select class="form-row__input" v-model="accountType">
+      <option disabled value="">Choix du type de compte</option>
+      <option>Client</option>
+      <option>Restaurateur</option>
+      <option>Livreur</option>
+      <option>Développeur</option>
+      <option>Service commercial</option>
+      <option>Service technique</option>
+    </select>
     </div>
     <div class="form-row" v-if="mode == 'create'">
-      <input v-model="prenom" class="form-row__input" type="text" placeholder="Prénom"/>
-      <input v-model="nom" class="form-row__input" type="text" placeholder="Nom"/>
+      <input v-model="prenom" class="form-row__input" login="text" placeholder="Prénom"/>
+      <input v-model="nom" class="form-row__input" login="text" placeholder="Nom"/>
     </div>
     <div class="form-row">
-      <input v-model="password" class="form-row__input" type="password" placeholder="Mot de passe"/>
+      <input v-model="password" class="form-row__input" login="password" placeholder="Mot de passe"/>
     </div>
     <div class="form-row" v-if="mode == 'login' && status == 'error_login'">
       Adresse mail et/ou mot de passe invalide
@@ -38,7 +52,7 @@
 import { mapState } from 'vuex'
 
 export default {
-  name: 'Login',
+  name: 'login',
   data: function () {
     return {
       mode: 'login',
@@ -46,6 +60,7 @@ export default {
       prenom: '',
       nom: '',
       password: '',
+      accountType: '',
     }
   },
   mounted: function () {
@@ -57,7 +72,7 @@ export default {
   computed: {
     validatedFields: function () {
       if (this.mode == 'create') {
-        if (this.email != "" && this.prenom != "" && this.nom != "" && this.password != "") {
+        if (this.email != "" && this.prenom != "" && this.nom != "" && this.password != "" && this.accountType != "") {
           return true;
         } else {
           return false;
@@ -97,6 +112,7 @@ export default {
         nom: this.nom,
         prenom: this.prenom,
         password: this.password,
+        accountType: this.accountType,
       }).then(function () {
         self.login();
       }, function (error) {
