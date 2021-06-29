@@ -88,6 +88,7 @@ export default {
     ...mapState(['status'])
   },
   methods: {
+
     switchToCreateAccount: function () {
       this.mode = 'create';
     },
